@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JJF Rotas - Buscar melhor rota</title>
+    <link rel="stylesheet" href="styles/estilo.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</head>
+<body>
+    <header class="cabecalho">
+        <nav class="cabecalho_menu">
+            <a class="cabecalho_menu_link" href="index.html">Home</a>
+            <a class="cabecalho_menu_link" href="about.html">Sobre nós</a>
+            <a class="cabecalho_menu_link" href="search.html">Buscar rota</a>
+        </nav>
+    </header>
+    <main class="apresentacao">
+        <section class="apresentacao_conteudo">
+            <form id="caminho-form">
+                <legend><h1 class="apresentacao_conteudo_titulo">Para onde deseja ir?</h1></legend><br><br>
+                <label for="origem">Cidade de Origem:</label>
+                <input type="text" id="origem" name="origem" required><br><br><br>
+            
+                <label for="destino">Cidade Destino:</label>
+                <input type="text" id="destino" name="destino" required><br><br><br>    
+            
+                <label for="metodo">Escolha um Método de Busca:</label>
+                <select id="metodo" name="metodo">
+                    <option value="amplitude">Amplitude</option>
+                    <option value="profundidade">Profundidade</option>
+                    <option value="profundidadeLimitada">Profundidade Limitada</option>
+                    <option value="profundidadeIterativa">Profundidade Iterativa</option>
+                    <option value="bidirecional">Bidirecional</option>
+                    <option value="custoUniforme">Custo Uniforme</option>
+                </select><br><br><br>
+            
+                <input type="button" value="Buscar" onclick="enviarFormulario()">
+            </form>
+            
+            <div id="resultado">
+                <!-- Os resultados da busca serão exibidos aqui -->
+            </div>
+            
+            <script>
+                function enviarFormulario() {
+                    var origem = document.getElementById("origem").value;
+                    var destino = document.getElementById("destino").value;
+                    var metodo = document.getElementById("metodo").value;
+            
+                    // Envie uma solicitação AJAX para o endpoint do controlador
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("GET", "http://127.0.0.1:8080/caminho/old/" + origem + "/" + destino + "/" + metodo, true);
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4) {
+                            var resultadoDiv = document.getElementById("resultado");
+                            resultadoDiv.innerHTML = "<h2>Resultado da Busca:</h2>";
+            
+                            if (xhr.status === 200) {
+                                var resultado = JSON.parse(xhr.responseText);
+                                resultadoDiv.innerHTML += "<p>" + resultado.join(" -> ") + "</p>";
+                            } else {
+                                resultadoDiv.innerHTML += "<p>Ocorreu um erro na busca.</p>";
+                            }
+                        }
+                    };
+                    xhr.send();
+                }
+            </script>
+        </section>
+        <img class="imagem_principal" width="40%" src="assets/Doc1.jpg"  alt="">
+    </main>
+    <div class="mapaBusca" id="map" style="height: 500px;" style="width: 200px;">
+    <!-- Dentro do seu elemento <script> existente -->
+<script>
+    // Inicialize o mapa
+    var map = L.map('map'); // Define a posição inicial e o nível de zoom
+
+    // Adicione uma camada de mapa de fundo (por exemplo, OpenStreetMap)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'JJF Rotas'
+    }).addTo(map);
+
+    var marker = L.marker([-23.479, -45.571]).addTo(map);
+    marker.bindPopup("Barra da Varginha").openPopup();
+
+    var marker = L.marker([-23.105, -45.706]).addTo(map);
+    marker.bindPopup("Caçapava").openPopup();
+
+    var marker = L.marker([-23.115, -45.649]).addTo(map);
+    marker.bindPopup("Caçapava Velha").openPopup();
+
+    var marker = L.marker([-23.620, -45.415]).addTo(map);
+    marker.bindPopup("Caraguá").openPopup();
+
+    var marker = L.marker([-23.193, -45.404]).addTo(map);
+    marker.bindPopup("Carapeva").openPopup();
+
+    var marker = L.marker([-23.267, -45.810]).addTo(map);
+    marker.bindPopup("Jardim São Judas").openPopup();
+
+    var marker = L.marker([-23.525, -46.182]).addTo(map);
+    marker.bindPopup("Mogi das Cruzes").openPopup();
+
+    var marker = L.marker([-23.379, -45.443]).addTo(map);
+    marker.bindPopup("Natividade da Serra").openPopup();
+
+    var marker = L.marker([-23.387, -45.663]).addTo(map);
+    marker.bindPopup("Paraibuna").openPopup();
+
+    var marker = L.marker([-23.317, -46.105]).addTo(map);
+    marker.bindPopup("Paratei").openPopup();
+
+    var marker = L.marker([-23.262, -45.532]).addTo(map);
+    marker.bindPopup("Redenção da Serra").openPopup();
+
+    var marker = L.marker([-23.529, -45.847]).addTo(map);
+    marker.bindPopup("Salesopolis").openPopup();
+
+    var marker = L.marker([-23.212, -45.899]).addTo(map);
+    marker.bindPopup("São José dos Campos").openPopup();
+
+    var marker = L.marker([-23.222, -45.310]).addTo(map);
+    marker.bindPopup("São Luiz").openPopup();
+
+    var marker = L.marker([-23.542, -46.303]).addTo(map);
+    marker.bindPopup("Suzano").openPopup();
+
+    var marker = L.marker([-23.025, -45.563]).addTo(map);
+    marker.bindPopup("Taubaté").openPopup();
+
+    var marker = L.marker([-23.433, -45.084]).addTo(map);
+    marker.bindPopup("Ubatuba").openPopup();
+
+    /*function interligarPontos() {
+    var coordenadas = [
+        [-23.479, -45.571], // Barra da Varginha
+        [-23.105, -45.706], // Caçapava...
+        [-23.115, -45.649],
+        [-23.620, -45.415],
+        [-23.193, -45.404],
+        [-23.267, -45.810],
+        [-23.525, -46.182],
+        [-23.379, -45.443],
+        [-23.387, -45.663],
+        [-23.317, -46.105],
+        [-23.262, -45.532],
+        [-23.529, -45.847],
+        [-23.212, -45.899],
+        [-23.222, -45.310],
+        [-23.542, -46.303],
+        [-23.025, -45.563],
+        [-23.433, -45.084],
+    ];
+    var polyline = L.polyline(coordenadas, { color: 'black' }).addTo(map);
+}
+// Chame a função interligarPontos() para criar a polilinha
+interligarPontos(); */
+
+
+    // Adicione um marcador inicial na sua localização atual
+    function adicionarMarcadorNaLocalizacaoAtual() {
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
+
+                //var marker = L.marker([latitude, longitude]).addTo(map);
+               // marker.bindPopup("Você está aqui!!").openPopup();
+
+                map.setView([latitude, longitude], 9); // Define o nível de zoom para mostrar sua localização com mais detalhes
+            }, function(error) {
+                console.error("Erro ao obter a localização: " + error.message);
+            });
+        } else {
+            console.error("Geolocalização não suportada pelo navegador.");
+        }
+    }
+    // Chame a função para adicionar o marcador na localização atual
+    adicionarMarcadorNaLocalizacaoAtual();
+</script>
+    </div>
+    <footer class="rodape"> 
+        <p>JJF Rotas</p>
+    </footer>
+</body>
+</html>
